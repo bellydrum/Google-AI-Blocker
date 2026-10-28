@@ -15,6 +15,10 @@ function isMobile() {
         return navigator.userAgentData.mobile;
     } catch (exception) {
         console.log("An error occurred using navigator.userAgentData.mobile: " + exception);
+
+        const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+        console.log("Here is navigator.userAgent: " + navigator.userAgent);
+        return regex.test(navigator.userAgent);
     }
 }
 
