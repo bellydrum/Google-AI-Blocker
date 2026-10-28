@@ -10,6 +10,10 @@
 // @run-at       document-start
 // ==/UserScript==
 
+function isMobile() {
+    return navigator.userAgentData.mobile;
+}
+
 function retrieveElementsBasedOnTargetText(elementName, targetText) {
     const elements = Array.from(document.querySelectorAll(elementName));
     let results = elements.filter(element => element.textContent.trim() === targetText);
@@ -33,7 +37,7 @@ function AIModeNavbarButtonExists() {
     const matchingSpans = retrieveElementsBasedOnTargetText("span", "AI Mode")
     if (matchingSpans.length) {
         const matchingSpan = matchingSpans.at(0);
-        return matchingSpan.closest("div[role='listitem']")
+        return matchingSpan.closest("div[role='listitem']");
     }
 }
 
@@ -100,6 +104,7 @@ function linkToGoogleAIExists() {
         const target = AIModeNavbarButtonExists();
 
         if (target) {
+            console.log(Object.getPrototypeOf(target));
             target.remove();
             me.disconnect();
         } else if (observerFailsafe) me.disconnect()
@@ -172,6 +177,14 @@ function linkToGoogleAIExists() {
         sponsoredResultsObserver.observe(document.body, {childList: true, subtree: true});
     } catch (exception) {
         console.log(exception)
+    }
+
+    if (isMobile()) {
+        addEventListener("DOMContentLoaded", (event) => {
+            // remove AI Mode Navbar button
+            const AIModeNavbarButton = AIModeNavbarButtonExists();
+            AIModeNavbarButton.remove();
+        });
     }
 
 })();
