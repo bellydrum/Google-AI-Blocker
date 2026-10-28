@@ -11,7 +11,11 @@
 // ==/UserScript==
 
 function isMobile() {
-    return navigator.userAgentData.mobile;
+    try {
+        return navigator.userAgentData.mobile;
+    } catch (exception) {
+        console.log("An error occurred using navigator.userAgentData.mobile: " + exception);
+    }
 }
 
 function retrieveElementsBasedOnTargetText(elementName, targetText) {
